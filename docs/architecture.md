@@ -2,24 +2,47 @@
 
 ## Stack
 
-SvelteKit 5 + TypeScript, built with Vite. Package manager: pnpm.
+- **Framework**: SvelteKit 5 with TypeScript
+- **Build**: Vite
+- **Package manager**: pnpm
+- **Static adapter**: `@sveltejs/adapter-static` with `fallback: 404.html` (SPA mode)
+- **Persistence**: localStorage for auto-save; JSON import/export via UI
 
 ## Directory layout
 
 ```
 src/
-  routes/          # SvelteKit pages (+page.svelte, +layout.svelte)
+  routes/
+    +layout.svelte              # App header, Import/Export buttons, auto-save
+    +page.svelte                # Sets list
+    sets/[setId]/
+      +page.svelte              # Set detail: series info, matrices list
+      matrices/[matrixId]/
+        +page.svelte            # Matrix view: grid + analysis tabs
   lib/
-    assets/        # Static data files (hexachords.json)
-    music/         # All domain logic — pure TypeScript, no Svelte dependency
-    index.ts       # Re-exports everything from lib/music/index.ts
+    assets/                      # Static data files (hexachords.json)
+    music/                       # All domain logic — pure TypeScript, no Svelte dependency
+    types.ts                     # AppState, SetData, MatrixData
+    state.svelte.ts             # Reactive state with localStorage persistence
+    components/                  # Svelte UI components
+      SetDialog.svelte
+      MatrixDialog.svelte
+      MatrixGrid.svelte
+      AnalysisPanel.svelte
+    index.ts                     # Re-exports everything from lib/music/index.ts
 ```
 
 ## Domain / UI boundary
 
 `src/lib/music/` is framework-agnostic. Every function is pure (no side effects,
-no global state except the hexachord DB Map built at module init). UI components
-in `src/routes/` import from `$lib` and call into these functions.
+no global state except the hexachord DB Map built at module init).
+
+UI is split into:
+- **Routes** (`src/routes/`) — SvelteKit page components that handle navigation and layout
+- **Components** (`src/lib/components/`) — reusable Svelte 5 components (dialogs, grid, analysis panel)
+- **State** (`src/lib/state.svelte.ts`) — reactive app state with localStorage persistence
+
+Both routes and components import from `$lib/music` and call domain functions directly.
 
 ## Import alias
 
@@ -41,5 +64,7 @@ pitch  ←  chord  ←  intervalVector
 
 ## Testing
 
-Tests are collocated: `*.test.ts` beside each module. Run with `npx vitest run --project server`.
-The `client` vitest project requires Playwright — only needed for Svelte component tests.
+Tests are collocated: `*.test.ts` beside each module. Run with `pnpm test:unit`.
+All tests are **domain-focused** (music logic in `src/lib/music/`). UI components
+(routes, dialogs, grids) are not tested — the focus is on correctness of the music
+transformations, analyses, and parsing.
