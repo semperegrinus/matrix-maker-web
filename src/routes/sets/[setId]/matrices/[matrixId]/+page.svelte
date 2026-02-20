@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { appState, updateMatrix } from '$lib/state.svelte.js';
+	import { base } from '$app/paths';
+	import { appState, updateMatrix, recordMatrixView } from '$lib/state.svelte.js';
 	import MatrixGrid from '$lib/components/MatrixGrid.svelte';
 	import AnalysisPanel from '$lib/components/AnalysisPanel.svelte';
 	import { parseSeries, isParseError } from '$lib/music/series.js';
@@ -33,6 +34,13 @@
 
 	let activeTab = $state<'matrix' | 'analysis'>('matrix');
 
+	// Record view on navigation to this matrix
+	$effect(() => {
+		const sId = setId;
+		const mId = matrixId;
+		if (sId && mId) recordMatrixView(sId, mId);
+	});
+
 	// Bound display options — update matrixData in place
 	function setDisplayType(v: 'numbers' | 'noteNames') {
 		if (!set || !matrixData) return;
@@ -51,10 +59,10 @@
 </script>
 
 {#if !set || !matrixData}
-	<p>Not found. <a href="/">Go home</a></p>
+	<p>Not found. <a href="{base}/">Go home</a></p>
 {:else}
 	<div class="breadcrumb no-print">
-		<a href="/">Sets</a> / <a href="/sets/{set.id}">{set.title}</a> / <span>{matrixData.name}</span>
+		<a href="{base}/">Sets</a> / <span>{set.title}</span> / <span>{matrixData.name}</span>
 	</div>
 
 	<div class="page-header no-print">

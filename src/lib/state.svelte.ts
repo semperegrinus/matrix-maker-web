@@ -97,3 +97,11 @@ export function deleteMatrix(setId: string, matrixId: string): void {
 	const index = set.matrices.findIndex((m) => m.id === matrixId);
 	if (index !== -1) set.matrices.splice(index, 1);
 }
+
+export function recordMatrixView(setId: string, matrixId: string): void {
+	const set = appState.sets.find((s) => s.id === setId);
+	if (!set) return;
+	const matrix = set.matrices.find((m) => m.id === matrixId);
+	if (!matrix) return;
+	matrix.lastViewedAt = Date.now();
+}

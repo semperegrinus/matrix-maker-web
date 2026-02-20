@@ -5,15 +5,20 @@
 
 	interface Props {
 		set?: SetData | null;
+		duplicatingSet?: SetData | null;
 		onconfirm: (data: { title: string; seriesInput: string; pitchClassOfC: number }) => void;
 		oncancel: () => void;
 	}
 
-	let { set = null, onconfirm, oncancel }: Props = $props();
+	let { set = null, duplicatingSet = null, onconfirm, oncancel }: Props = $props();
 
-	let title = $state(set?.title ?? '');
-	let seriesInput = $state(set?.seriesInput ?? '');
-	let pitchClassOfC = $state(set?.pitchClassOfC ?? 0);
+	const sourceSet = $derived(set ?? duplicatingSet);
+	// svelte-ignore state_referenced_locally
+	let title = $state(sourceSet?.title ?? '');
+	// svelte-ignore state_referenced_locally
+	let seriesInput = $state(sourceSet?.seriesInput ?? '');
+	// svelte-ignore state_referenced_locally
+	let pitchClassOfC = $state(sourceSet?.pitchClassOfC ?? 0);
 
 	let dialog: HTMLDialogElement;
 
@@ -45,7 +50,7 @@
 <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 <dialog bind:this={dialog} onkeydown={handleKeydown} onclose={oncancel}>
 	<form method="dialog" onsubmit={(e) => { e.preventDefault(); handleConfirm(); }}>
-		<h2>{set ? 'Edit Set' : 'New Set'}</h2>
+		<h2>{set ? 'Edit Set' : duplicatingSet ? 'Duplicate Set' : 'New Set'}</h2>
 
 		<div class="field">
 			<label for="set-title">Title</label>
@@ -79,16 +84,14 @@
 			<label for="set-pcc">C =</label>
 			<select id="set-pcc" bind:value={pitchClassOfC}>
 				{#each Array.from({ length: 12 }, (_, i) => i) as pc}
-					<option value={pc}>{pc} ({NOTE_NAMES_BY_PC[pc]})</option>
+					<option value={pc}>{pc}</option>
 				{/each}
 			</select>
 		</div>
 
 		<div class="actions">
 			<button type="button" onclick={oncancel}>Cancel</button>
-			<button type="submit" disabled={!isValid}>
-				{set ? 'Save' : 'Create'}
-			</button>
+			<button type="submit" disabled={!isValid}>{set ? 'Save' : 'Create'}</button>
 		</div>
 	</form>
 </dialog>

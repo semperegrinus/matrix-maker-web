@@ -14,11 +14,12 @@
 		matrix?: MatrixData | null;
 		seriesInput: string;
 		pitchClassOfC: number;
+		setTitle?: string;
 		onconfirm: (data: Omit<MatrixData, 'id'>) => void;
 		oncancel: () => void;
 	}
 
-	let { matrix = null, seriesInput, pitchClassOfC, onconfirm, oncancel }: Props = $props();
+	let { matrix = null, seriesInput, pitchClassOfC, setTitle = '', onconfirm, oncancel }: Props = $props();
 
 	let dialog: HTMLDialogElement;
 
@@ -26,15 +27,24 @@
 		dialog?.showModal();
 	});
 
-	// Transform fields
+	// Transform fields — svelte-ignore state_referenced_locally (intentional one-time init from prop)
+	// svelte-ignore state_referenced_locally
 	let invert = $state(matrix?.transform.invert ?? false);
+	// svelte-ignore state_referenced_locally
 	let multiplier = $state(matrix?.transform.multiplier ?? 1);
+	// svelte-ignore state_referenced_locally
 	let rotation = $state(matrix?.transform.rotation ?? 0);
+	// svelte-ignore state_referenced_locally
 	let intraHexachordal = $state(matrix?.transform.intraHexachordal ?? false);
+	// svelte-ignore state_referenced_locally
 	let shouldTranspose = $state(matrix?.transform.shouldTranspose ?? false);
+	// svelte-ignore state_referenced_locally
 	let firstPitchClass = $state(matrix?.transform.firstPitchClass ?? 0);
+	// svelte-ignore state_referenced_locally
 	let stravinskyVerticals = $state(matrix?.stravinskyVerticals ?? false);
+	// svelte-ignore state_referenced_locally
 	let displayType = $state<'numbers' | 'noteNames'>(matrix?.displayType ?? 'numbers');
+	// svelte-ignore state_referenced_locally
 	let accidentals = $state<'sharps' | 'flats'>(matrix?.accidentals ?? 'sharps');
 
 	const transform = $derived<MatrixTransform>({
@@ -46,9 +56,13 @@
 		firstPitchClass
 	});
 
-	const autoName = $derived(matrixTransformLabel(transform));
+	// Default name is "<set title> - <transform>" and follows transform changes unless edited
+	const autoName = $derived(
+		setTitle ? `${setTitle} - ${matrixTransformLabel(transform)}` : matrixTransformLabel(transform)
+	);
+	// svelte-ignore state_referenced_locally
 	let customName = $state(matrix?.name ?? '');
-	// Keep name in sync with auto-label when it hasn't been manually edited
+	// svelte-ignore state_referenced_locally
 	let nameEdited = $state(matrix !== null);
 
 	$effect(() => {
@@ -56,6 +70,29 @@
 			customName = autoName;
 		}
 	});
+
+	// Track state when editing begins so Escape can revert
+	let nameBeforeEdit = '';
+	let nameEditedBeforeEdit = false;
+
+	function handleNameFocus() {
+		nameBeforeEdit = customName;
+		nameEditedBeforeEdit = nameEdited;
+	}
+
+	function handleNameInput() {
+		// Empty name reverts to auto-following
+		nameEdited = customName.trim() !== '';
+	}
+
+	function handleNameKeydown(e: KeyboardEvent) {
+		if (e.key === 'Escape') {
+			e.stopPropagation(); // don't close the dialog
+			customName = nameBeforeEdit;
+			nameEdited = nameEditedBeforeEdit;
+			(e.target as HTMLInputElement).blur();
+		}
+	}
 
 	const parsedSeries = $derived(
 		(() => {
@@ -81,10 +118,6 @@
 			return pitchName(p, { pitchClassOfC, accidentals });
 		}
 		return String(p);
-	}
-
-	function handleNameInput() {
-		nameEdited = true;
 	}
 
 	function handleConfirm() {
@@ -114,6 +147,8 @@
 				type="text"
 				bind:value={customName}
 				oninput={handleNameInput}
+				onfocus={handleNameFocus}
+				onkeydown={handleNameKeydown}
 				placeholder={autoName}
 			/>
 		</div>

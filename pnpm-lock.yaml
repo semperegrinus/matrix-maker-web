@@ -47,6 +47,9 @@ importers:
       globals:
         specifier: ^17.3.0
         version: 17.3.0
+      lucide-svelte:
+        specifier: ^0.575.0
+        version: 0.575.0(svelte@5.53.0)
       playwright:
         specifier: ^1.58.1
         version: 1.58.2
@@ -963,6 +966,11 @@ packages:
 
   lodash.merge@4.6.2:
     resolution: {integrity: sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==}
+
+  lucide-svelte@0.575.0:
+    resolution: {integrity: sha512-Tu15tJfbmRNPaU61yeNFf3jfRHs8ABA+NwTt7TWmwVbhlSA3H7sW65tX6RttcP7HGV4aHUlYhXixZOlntoFBdw==}
+    peerDependencies:
+      svelte: ^3 || ^4 || ^5.0.0-next.42
 
   magic-string@0.30.21:
     resolution: {integrity: sha512-vd2F4YUyEXKGcLHoq+TEyCjxueSeHnFxyyjNp80yg0XV4vUhnDer/lvvlqM/arB5bXQN5K2/3oinyCRyx8T2CQ==}
@@ -2147,6 +2155,10 @@ snapshots:
       p-locate: 5.0.0
 
   lodash.merge@4.6.2: {}
+
+  lucide-svelte@0.575.0(svelte@5.53.0):
+    dependencies:
+      svelte: 5.53.0
 
   magic-string@0.30.21:
     dependencies:

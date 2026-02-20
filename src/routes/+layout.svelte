@@ -1,6 +1,7 @@
 <script lang="ts">
 	import favicon from '$lib/assets/favicon.svg';
 	import { browser } from '$app/environment';
+	import { base } from '$app/paths';
 	import { appState, saveState, exportState, importState } from '$lib/state.svelte.js';
 
 	let { children } = $props();
@@ -38,9 +39,9 @@
 
 <div class="app">
 	<header class="app-header">
-		<a href="/" class="app-title">Matrix Maker</a>
+		<a href="{base}/" class="app-title">Matrix Maker</a>
 		<nav class="app-nav">
-			<a href="/">Sets</a>
+			<a href="{base}/">Sets</a>
 		</nav>
 		<div class="header-actions">
 			<button onclick={handleImport} class="btn-secondary">Import</button>

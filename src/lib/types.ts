@@ -7,6 +7,7 @@ export interface MatrixData {
 	stravinskyVerticals: boolean;
 	displayType: 'numbers' | 'noteNames';
 	accidentals: 'sharps' | 'flats';
+	lastViewedAt?: number; // ms since epoch
 }
 
 export interface SetData {
