@@ -1,0 +1,590 @@
+[
+	{
+		"number": 1,
+		"normalForm": [0, 1, 2, 3, 4, 5],
+		"combinatoriality": "1st-order all-combinatorial",
+		"combinatorialForms": ["S6", "I11", "R0", "RI5"],
+		"properties": ["IE", "SI"],
+		"secondHexachord": {
+			"number": 1,
+			"relations": ["T", "I"]
+		}
+	},
+	{
+		"number": 2,
+		"normalForm": [0, 2, 3, 4, 5, 7],
+		"combinatoriality": "1st-order all-combinatorial",
+		"combinatorialForms": ["S6", "I1", "R0", "RI7"],
+		"properties": ["IE", "SI"],
+		"secondHexachord": {
+			"number": 2,
+			"relations": ["T", "I"]
+		}
+	},
+	{
+		"number": 3,
+		"normalForm": [0, 2, 4, 5, 7, 9],
+		"combinatoriality": "1st-order all-combinatorial",
+		"combinatorialForms": ["S6", "I3", "R0", "RI9"],
+		"properties": ["IE", "SI"],
+		"secondHexachord": {
+			"number": 3,
+			"relations": ["T", "I"]
+		}
+	},
+	{
+		"number": 4,
+		"normalForm": [0, 1, 2, 6, 7, 8],
+		"combinatoriality": "2nd-order all-combinatorial",
+		"combinatorialForms": ["S3", "S9", "I5", "I11", "R0", "R6", "RI2", "RI8"],
+		"properties": ["IE", "SI", "ST"],
+		"secondHexachord": {
+			"number": 4,
+			"relations": ["T", "I"]
+		}
+	},
+	{
+		"number": 5,
+		"normalForm": [0, 1, 4, 5, 8, 9],
+		"combinatoriality": "3rd-order all-combinatorial",
+		"combinatorialForms": [
+			"S2",
+			"S6",
+			"S10",
+			"I3",
+			"I7",
+			"I11",
+			"R0",
+			"R4",
+			"R8",
+			"RI1",
+			"RI5",
+			"RI9"
+		],
+		"properties": ["IE", "SI", "ST"],
+		"secondHexachord": {
+			"number": 5,
+			"relations": ["T", "I"]
+		}
+	},
+	{
+		"number": 6,
+		"normalForm": [0, 2, 4, 6, 8, 10],
+		"combinatoriality": "6th-order all-combinatorial",
+		"combinatorialForms": [
+			"S1",
+			"S3",
+			"S5",
+			"S7",
+			"S9",
+			"S11",
+			"I1",
+			"I3",
+			"I5",
+			"I7",
+			"I9",
+			"I11",
+			"R0",
+			"R2",
+			"R4",
+			"R6",
+			"R8",
+			"R10",
+			"RI0",
+			"RI2",
+			"RI4",
+			"RI6",
+			"RI8",
+			"RI10"
+		],
+		"properties": ["IE", "SI", "ST"],
+		"secondHexachord": {
+			"number": 6,
+			"relations": ["T", "I"]
+		}
+	},
+	{
+		"number": 7,
+		"normalForm": [0, 1, 2, 3, 4, 6],
+		"combinatoriality": "I-combinatorial",
+		"combinatorialForms": ["I11", "R0"],
+		"properties": [],
+		"secondHexachord": {
+			"number": 7,
+			"relations": ["I"]
+		}
+	},
+	{
+		"number": 8,
+		"normalForm": [0, 1, 2, 3, 5, 7],
+		"combinatoriality": "I-combinatorial",
+		"combinatorialForms": ["I11", "R0"],
+		"properties": [],
+		"secondHexachord": {
+			"number": 8,
+			"relations": ["I"]
+		}
+	},
+	{
+		"number": 9,
+		"normalForm": [0, 1, 2, 4, 5, 8],
+		"combinatoriality": "I-combinatorial",
+		"combinatorialForms": ["I11", "R0"],
+		"properties": [],
+		"secondHexachord": {
+			"number": 9,
+			"relations": ["I"]
+		}
+	},
+	{
+		"number": 10,
+		"normalForm": [0, 1, 4, 5, 6, 8],
+		"combinatoriality": "I-combinatorial",
+		"combinatorialForms": ["I3", "R0"],
+		"properties": [],
+		"secondHexachord": {
+			"number": 10,
+			"relations": ["I"]
+		}
+	},
+	{
+		"number": 11,
+		"normalForm": [0, 1, 3, 5, 8, 9],
+		"combinatoriality": "I-combinatorial",
+		"combinatorialForms": ["I7", "R0"],
+		"properties": [],
+		"secondHexachord": {
+			"number": 11,
+			"relations": ["I"]
+		}
+	},
+	{
+		"number": 12,
+		"normalForm": [0, 2, 3, 5, 7, 9],
+		"combinatoriality": "I-combinatorial",
+		"combinatorialForms": ["I1", "R0"],
+		"properties": [],
+		"secondHexachord": {
+			"number": 12,
+			"relations": ["I"]
+		}
+	},
+	{
+		"number": 13,
+		"normalForm": [0, 1, 2, 3, 6, 7],
+		"combinatoriality": "I-combinatorial",
+		"combinatorialForms": ["I11", "R0"],
+		"properties": [],
+		"secondHexachord": {
+			"number": 13,
+			"relations": ["I"]
+		}
+	},
+	{
+		"number": 14,
+		"normalForm": [0, 1, 2, 5, 7, 8],
+		"combinatoriality": "I-combinatorial",
+		"combinatorialForms": ["I11", "R0"],
+		"properties": [],
+		"secondHexachord": {
+			"number": 14,
+			"relations": ["I"]
+		}
+	},
+	{
+		"number": 15,
+		"normalForm": [0, 2, 3, 4, 6, 8],
+		"combinatoriality": "I-combinatorial",
+		"combinatorialForms": ["I1", "R0"],
+		"properties": [],
+		"secondHexachord": {
+			"number": 15,
+			"relations": ["I"]
+		}
+	},
+	{
+		"number": 16,
+		"normalForm": [0, 1, 2, 4, 6, 8],
+		"combinatoriality": "I-combinatorial",
+		"combinatorialForms": ["I11", "R0"],
+		"properties": [],
+		"secondHexachord": {
+			"number": 16,
+			"relations": ["I"]
+		}
+	},
+	{
+		"number": 17,
+		"normalForm": [0, 1, 3, 4, 6, 9],
+		"combinatoriality": "I-combinatorial",
+		"combinatorialForms": ["I11", "R0"],
+		"properties": [],
+		"secondHexachord": {
+			"number": 17,
+			"relations": ["I"]
+		}
+	},
+	{
+		"number": 18,
+		"normalForm": [0, 1, 3, 5, 7, 9],
+		"combinatoriality": "I-combinatorial",
+		"combinatorialForms": ["I11", "R0"],
+		"properties": [],
+		"secondHexachord": {
+			"number": 18,
+			"relations": ["I"]
+		}
+	},
+	{
+		"number": 19,
+		"normalForm": [0, 1, 3, 6, 7, 9],
+		"combinatoriality": "2nd-order",
+		"combinatorialForms": ["I5", "I11", "R0"],
+		"properties": ["ST"],
+		"secondHexachord": {
+			"number": 19,
+			"relations": ["I"]
+		}
+	},
+	{
+		"number": 20,
+		"normalForm": [0, 1, 3, 4, 5, 8],
+		"combinatoriality": "S-combinatorial",
+		"combinatorialForms": ["S6", "R0"],
+		"properties": ["IE"],
+		"secondHexachord": {
+			"number": 20,
+			"relations": ["T"]
+		}
+	},
+	{
+		"number": 21,
+		"normalForm": [0, 1, 2, 4, 5, 6],
+		"combinatoriality": "RI-combinatorial",
+		"combinatorialForms": ["R0", "RI6"],
+		"properties": ["SI"],
+		"secondHexachord": {
+			"number": 22,
+			"relations": ["T", "I"]
+		}
+	},
+	{
+		"number": 22,
+		"normalForm": [0, 1, 2, 3, 4, 8],
+		"combinatoriality": "RI-combinatorial",
+		"combinatorialForms": ["R0", "RI4"],
+		"properties": ["SI"],
+		"secondHexachord": {
+			"number": 21,
+			"relations": ["T", "I"]
+		}
+	},
+	{
+		"number": 23,
+		"normalForm": [0, 1, 3, 5, 7, 8],
+		"combinatoriality": "RI-combinatorial",
+		"combinatorialForms": ["R0", "RI8"],
+		"properties": ["SI"],
+		"secondHexachord": {
+			"number": 24,
+			"relations": ["T", "I"]
+		}
+	},
+	{
+		"number": 24,
+		"normalForm": [0, 1, 2, 5, 7, 9],
+		"combinatoriality": "RI-combinatorial",
+		"combinatorialForms": ["R0", "RI2"],
+		"properties": ["SI"],
+		"secondHexachord": {
+			"number": 23,
+			"relations": ["T", "I"]
+		}
+	},
+	{
+		"number": 25,
+		"normalForm": [0, 1, 2, 5, 6, 7],
+		"combinatoriality": "RI-combinatorial",
+		"combinatorialForms": ["R0", "RI7"],
+		"properties": ["SI"],
+		"secondHexachord": {
+			"number": 26,
+			"relations": ["T", "I"]
+		}
+	},
+	{
+		"number": 26,
+		"normalForm": [0, 1, 2, 3, 7, 8],
+		"combinatoriality": "RI-combinatorial",
+		"combinatorialForms": ["R0", "RI3"],
+		"properties": ["SI"],
+		"secondHexachord": {
+			"number": 25,
+			"relations": ["T", "I"]
+		}
+	},
+	{
+		"number": 27,
+		"normalForm": [0, 1, 3, 4, 6, 7],
+		"combinatoriality": "RI-combinatorial",
+		"combinatorialForms": ["R0", "RI7"],
+		"properties": ["SI"],
+		"secondHexachord": {
+			"number": 28,
+			"relations": ["T", "I"]
+		}
+	},
+	{
+		"number": 28,
+		"normalForm": [0, 1, 2, 3, 6, 9],
+		"combinatoriality": "RI-combinatorial",
+		"combinatorialForms": ["R0", "RI3"],
+		"properties": ["SI"],
+		"secondHexachord": {
+			"number": 27,
+			"relations": ["T", "I"]
+		}
+	},
+	{
+		"number": 29,
+		"normalForm": [0, 2, 3, 5, 6, 8],
+		"combinatoriality": "RI-combinatorial",
+		"combinatorialForms": ["R0", "RI8"],
+		"properties": ["SI"],
+		"secondHexachord": {
+			"number": 30,
+			"relations": ["T", "I"]
+		}
+	},
+	{
+		"number": 30,
+		"normalForm": [0, 2, 3, 4, 6, 9],
+		"combinatoriality": "RI-combinatorial",
+		"combinatorialForms": ["R0", "RI6"],
+		"properties": ["SI"],
+		"secondHexachord": {
+			"number": 29,
+			"relations": ["T", "I"]
+		}
+	},
+	{
+		"number": 31,
+		"normalForm": [0, 1, 3, 5, 6, 9],
+		"combinatoriality": "RI-combinatorial",
+		"combinatorialForms": ["R0", "RI6"],
+		"properties": ["SI"],
+		"secondHexachord": {
+			"number": 32,
+			"relations": ["T", "I"]
+		}
+	},
+	{
+		"number": 32,
+		"normalForm": [0, 1, 3, 4, 7, 9],
+		"combinatoriality": "RI-combinatorial",
+		"combinatorialForms": ["R0", "RI4"],
+		"properties": ["SI"],
+		"secondHexachord": {
+			"number": 31,
+			"relations": ["T", "I"]
+		}
+	},
+	{
+		"number": 33,
+		"normalForm": [0, 1, 3, 6, 8, 9],
+		"combinatoriality": "RI-combinatorial",
+		"combinatorialForms": ["R0", "RI9"],
+		"properties": ["SI"],
+		"secondHexachord": {
+			"number": 34,
+			"relations": ["T", "I"]
+		}
+	},
+	{
+		"number": 34,
+		"normalForm": [0, 1, 4, 6, 7, 9],
+		"combinatoriality": "RI-combinatorial",
+		"combinatorialForms": ["R0", "RI1"],
+		"properties": ["SI"],
+		"secondHexachord": {
+			"number": 33,
+			"relations": ["T", "I"]
+		}
+	},
+	{
+		"number": 35,
+		"normalForm": [0, 1, 2, 3, 5, 6],
+		"combinatoriality": "non-combinatorial",
+		"combinatorialForms": ["R0"],
+		"properties": [],
+		"secondHexachord": {
+			"number": 36,
+			"relations": ["I"]
+		}
+	},
+	{
+		"number": 36,
+		"normalForm": [0, 1, 2, 3, 4, 7],
+		"combinatoriality": "non-combinatorial",
+		"combinatorialForms": ["R0"],
+		"properties": [],
+		"secondHexachord": {
+			"number": 35,
+			"relations": ["I"]
+		}
+	},
+	{
+		"number": 37,
+		"normalForm": [0, 1, 3, 4, 5, 7],
+		"combinatoriality": "non-combinatorial",
+		"combinatorialForms": ["R0"],
+		"properties": [],
+		"secondHexachord": {
+			"number": 38,
+			"relations": ["T"]
+		}
+	},
+	{
+		"number": 38,
+		"normalForm": [0, 2, 3, 4, 5, 8],
+		"combinatoriality": "non-combinatorial",
+		"combinatorialForms": ["R0"],
+		"properties": [],
+		"secondHexachord": {
+			"number": 37,
+			"relations": ["T"]
+		}
+	},
+	{
+		"number": 39,
+		"normalForm": [0, 1, 2, 4, 5, 7],
+		"combinatoriality": "non-combinatorial",
+		"combinatorialForms": ["R0"],
+		"properties": [],
+		"secondHexachord": {
+			"number": 40,
+			"relations": ["I"]
+		}
+	},
+	{
+		"number": 40,
+		"normalForm": [0, 1, 2, 3, 5, 8],
+		"combinatoriality": "non-combinatorial",
+		"combinatorialForms": ["R0"],
+		"properties": [],
+		"secondHexachord": {
+			"number": 39,
+			"relations": ["I"]
+		}
+	},
+	{
+		"number": 41,
+		"normalForm": [0, 1, 3, 4, 7, 8],
+		"combinatoriality": "non-combinatorial",
+		"combinatorialForms": ["R0"],
+		"properties": [],
+		"secondHexachord": {
+			"number": 42,
+			"relations": ["I"]
+		}
+	},
+	{
+		"number": 42,
+		"normalForm": [0, 1, 2, 5, 6, 9],
+		"combinatoriality": "non-combinatorial",
+		"combinatorialForms": ["R0"],
+		"properties": [],
+		"secondHexachord": {
+			"number": 41,
+			"relations": ["I"]
+		}
+	},
+	{
+		"number": 43,
+		"normalForm": [0, 1, 3, 4, 6, 8],
+		"combinatoriality": "non-combinatorial",
+		"combinatorialForms": ["R0"],
+		"properties": [],
+		"secondHexachord": {
+			"number": 44,
+			"relations": ["I"]
+		}
+	},
+	{
+		"number": 44,
+		"normalForm": [0, 1, 2, 4, 6, 9],
+		"combinatoriality": "non-combinatorial",
+		"combinatorialForms": ["R0"],
+		"properties": [],
+		"secondHexachord": {
+			"number": 43,
+			"relations": ["I"]
+		}
+	},
+	{
+		"number": 45,
+		"normalForm": [0, 1, 3, 5, 6, 8],
+		"combinatoriality": "non-combinatorial",
+		"combinatorialForms": ["R0"],
+		"properties": [],
+		"secondHexachord": {
+			"number": 46,
+			"relations": ["I"]
+		}
+	},
+	{
+		"number": 46,
+		"normalForm": [0, 1, 2, 4, 7, 9],
+		"combinatoriality": "non-combinatorial",
+		"combinatorialForms": ["R0"],
+		"properties": [],
+		"secondHexachord": {
+			"number": 45,
+			"relations": ["I"]
+		}
+	},
+	{
+		"number": 47,
+		"normalForm": [0, 1, 2, 4, 6, 7],
+		"combinatoriality": "non-combinatorial",
+		"combinatorialForms": ["R0"],
+		"properties": [],
+		"secondHexachord": {
+			"number": 48,
+			"relations": ["I"]
+		}
+	},
+	{
+		"number": 48,
+		"normalForm": [0, 1, 2, 3, 6, 8],
+		"combinatoriality": "non-combinatorial",
+		"combinatorialForms": ["R0"],
+		"properties": [],
+		"secondHexachord": {
+			"number": 47,
+			"relations": ["I"]
+		}
+	},
+	{
+		"number": 49,
+		"normalForm": [0, 1, 2, 4, 7, 8],
+		"combinatoriality": "non-combinatorial",
+		"combinatorialForms": ["R0"],
+		"properties": [],
+		"secondHexachord": {
+			"number": 50,
+			"relations": ["I"]
+		}
+	},
+	{
+		"number": 50,
+		"normalForm": [0, 1, 2, 5, 6, 8],
+		"combinatoriality": "non-combinatorial",
+		"combinatorialForms": ["R0"],
+		"properties": [],
+		"secondHexachord": {
+			"number": 49,
+			"relations": ["I"]
+		}
+	}
+]
