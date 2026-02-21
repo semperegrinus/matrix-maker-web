@@ -25,6 +25,6 @@ describe('NOTE_NAMES', () => {
 describe('pitchName()', () => {
 	it('names C', () => expect(pitchName(0)).toBe('C'));
 	it('names C# with sharps', () => expect(pitchName(1, { accidentals: 'sharps' })).toBe('C#'));
-	it('names Db with flats', () => expect(pitchName(1, { accidentals: 'flats' })).toBe('Db'));
+	it('names D♭ with flats', () => expect(pitchName(1, { accidentals: 'flats' })).toBe('D♭'));
 	it('respects pitchClassOfC', () => expect(pitchName(2, { pitchClassOfC: 2 })).toBe('C'));
 });

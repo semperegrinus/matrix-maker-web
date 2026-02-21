@@ -6,7 +6,8 @@
 	import AnalysisPanel from '$lib/components/AnalysisPanel.svelte';
 	import { parseSeries, isParseError } from '$lib/music/series.js';
 	import { buildMatrix } from '$lib/music/matrix.js';
-	import { matrixTransformLabel } from '$lib/music/matrixTransform.js';
+	import { applyMatrixTransform, matrixTransformConciseLabel } from '$lib/music/matrixTransform.js';
+	import { pitchName } from '$lib/music/pitch.js';
 
 	const setId = $derived($page.params.setId);
 	const matrixId = $derived($page.params.matrixId);
@@ -32,6 +33,24 @@
 			: null
 	);
 
+	const alteredSeries = $derived(
+		parsedSeries && matrixData ? applyMatrixTransform(matrixData.transform, parsedSeries) : null
+	);
+
+	function displaySeries(s: number[]): string {
+		if (matrixData?.displayType === 'noteNames') {
+			return s
+				.map((p) =>
+					pitchName(p, {
+						pitchClassOfC: set?.pitchClassOfC ?? 0,
+						accidentals: matrixData?.accidentals ?? 'sharps'
+					})
+				)
+				.join('  ');
+		}
+		return s.join('  ');
+	}
+
 	let activeTab = $state<'matrix' | 'analysis'>('matrix');
 
 	// Record view on navigation to this matrix
@@ -56,6 +75,8 @@
 		if (!set || !matrixData) return;
 		updateMatrix(set.id, matrixData.id, { stravinskyVerticals: v });
 	}
+
+
 </script>
 
 {#if !set || !matrixData}
@@ -68,8 +89,28 @@
 	<div class="page-header no-print">
 		<div class="header-titles">
 			<h1>{matrixData.name}</h1>
-			<span class="transform-label">{matrixTransformLabel(matrixData.transform)}</span>
 		</div>
+
+		{#if parsedSeries}
+			<div class="series-info">
+				<div class="series-row">
+					<span class="series-label">Original</span>
+					<span class="series-values">{displaySeries(parsedSeries)}</span>
+				</div>
+				{#if alteredSeries}
+					<div class="series-row">
+						<span class="series-label">Altered</span>
+						<span class="series-values">{displaySeries(alteredSeries)}</span>
+					</div>
+				{/if}
+				<div class="series-row">
+					<span class="series-label">Transform</span>
+					<span class="series-values transform-concise"
+						>{matrixTransformConciseLabel(matrixData.transform)}</span
+					>
+				</div>
+			</div>
+		{/if}
 	</div>
 
 	<!-- Tabs -->
@@ -162,6 +203,7 @@
 					displayType={matrixData.displayType}
 					accidentals={matrixData.accidentals}
 					pitchClassOfC={set.pitchClassOfC}
+					intraHexachordal={matrixData.transform.intraHexachordal}
 				/>
 			</div>
 		{:else}
@@ -205,8 +247,36 @@
 		font-size: 1.3rem;
 	}
 
-	.transform-label {
-		font-size: 0.85rem;
+	.series-info {
+		display: flex;
+		flex-direction: column;
+		gap: 0.2rem;
+		align-items: flex-end;
+	}
+
+	.series-row {
+		display: flex;
+		align-items: baseline;
+		gap: 0.6rem;
+	}
+
+	.series-label {
+		font-size: 0.7rem;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		color: #aaa;
+		min-width: 4.5rem;
+		text-align: right;
+	}
+
+	.series-values {
+		font-family: monospace;
+		font-size: 0.8rem;
+		color: #444;
+	}
+
+	.transform-concise {
+		font-family: inherit;
 		color: #666;
 	}
 

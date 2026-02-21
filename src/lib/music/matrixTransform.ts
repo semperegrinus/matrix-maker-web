@@ -42,6 +42,17 @@ export function matrixTransformLabel(t: MatrixTransform): string {
 	return tokens.join(', ');
 }
 
+/** Single-line abbreviated label suitable for compact display. */
+export function matrixTransformConciseLabel(t: MatrixTransform): string {
+	if (isIdentityTransform(t)) return '—';
+	const tokens: string[] = [];
+	if (t.invert) tokens.push('I');
+	if (t.multiplier !== 1) tokens.push(`M${t.multiplier}`);
+	if (t.rotation !== 0) tokens.push(t.intraHexachordal ? `IHR${t.rotation}` : `R${t.rotation}`);
+	if (t.shouldTranspose) tokens.push(`T→${t.firstPitchClass}`);
+	return tokens.join(' · ');
+}
+
 export function isIdentityTransform(t: MatrixTransform): boolean {
 	return t.multiplier === 1 && t.rotation === 0 && !t.invert;
 }

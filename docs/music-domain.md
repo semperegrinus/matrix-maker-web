@@ -68,6 +68,12 @@ Composite transform applied before matrix generation. Fields:
 Application order: invert → multiply → rotate → transpose.
 `DEFAULT_MATRIX_TRANSFORM` is identity (multiplier=1, rotation=0, invert=false).
 
+Label helpers:
+- `matrixTransformLabel(t)` — readable prose, e.g. `"inverted, M5, rotated by 3"`
+- `matrixTransformConciseLabel(t)` — compact tokens, e.g. `"I · M5 · R3 · T→0"`;
+  returns `"—"` for identity. Token forms: `I`, `M5`/`M7`/`M11`, `R{n}`, `IHR{n}`
+  (intra-hexachordal rotation), `T→{pc}`.
+
 ## Matrix (matrix.ts)
 
 `buildMatrix(series, { transform?, stravinskyVerticals? })` → `Matrix`.
@@ -79,7 +85,10 @@ transformed series to that column pitch.
 then transposed to begin on `series[0]`.
 
 **IntraHexachordal**: when `transform.intraHexachordal` is true and series has 12
-pitches, rowCount = 6 (not 12); rotation uses chordSize=6.
+pitches, `matrix.rowCount = 6` and rotation uses chordSize=6. **Caveat**: `rowCount`
+is only used by the Stravinsky path (loop bound). The standard path always iterates the
+full `firstColumn` (12 pitches), so `matrix.entries.length = 12` while `rowCount = 6`.
+Always use `matrix.entries.length` for the actual rendered row count.
 
 ## IntervalVector (intervalVector.ts)
 

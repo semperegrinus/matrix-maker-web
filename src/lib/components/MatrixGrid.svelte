@@ -8,9 +8,18 @@
 		displayType: 'numbers' | 'noteNames';
 		accidentals: 'sharps' | 'flats';
 		pitchClassOfC: number;
+		showSetForms?: boolean;
+		intraHexachordal?: boolean;
 	}
 
-	let { matrix, displayType, accidentals, pitchClassOfC }: Props = $props();
+	let {
+		matrix,
+		displayType,
+		accidentals,
+		pitchClassOfC,
+		showSetForms = false,
+		intraHexachordal = false
+	}: Props = $props();
 
 	function display(p: number): string {
 		if (displayType === 'noteNames') {
@@ -26,34 +35,60 @@
 	const colLabels = $derived(
 		matrix.entries[0]?.map((p) => setFormLabel({ kind: 'I', base: p })) ?? []
 	);
+
+	// Index of the last cell before the hexachordal midpoint split.
+	// Only split rows when the matrix is square (standard path: 12×12).
+	// With Stravinsky verticals the matrix is 6×12, so only the column split applies.
+	const splitRow = $derived(
+		intraHexachordal && matrix.entries.length === matrix.columnCount
+			? Math.floor(matrix.entries.length / 2) - 1
+			: -1
+	);
+	const splitCol = $derived(intraHexachordal ? Math.floor(matrix.columnCount / 2) - 1 : -1);
 </script>
 
 <div class="matrix-wrapper">
-	<table class="matrix-table">
-		<thead>
-			<tr>
-				<th class="corner"></th>
-				{#each colLabels as label}
-					<th class="col-label">{label}</th>
+	<div class="matrix-outer">
+		<table class="matrix-table">
+			{#if showSetForms}
+				<thead>
+					<tr>
+						<th class="corner"></th>
+						{#each colLabels as label, j}
+							<th class="col-label" class:split-right={j === splitCol}>{label}</th>
+						{/each}
+					</tr>
+				</thead>
+			{/if}
+			<tbody>
+				{#each matrix.entries as row, i}
+					<tr>
+						{#if showSetForms}
+							<th class="row-label" class:split-bottom={i === splitRow}>{rowLabels[i]}</th>
+						{/if}
+						{#each row as pitch, j}
+							<td
+								class="cell"
+								class:split-right={j === splitCol}
+								class:split-bottom={i === splitRow}
+							>{display(pitch)}</td>
+						{/each}
+					</tr>
 				{/each}
-			</tr>
-		</thead>
-		<tbody>
-			{#each matrix.entries as row, i}
-				<tr>
-					<th class="row-label">{rowLabels[i]}</th>
-					{#each row as pitch}
-						<td class="cell">{display(pitch)}</td>
-					{/each}
-				</tr>
-			{/each}
-		</tbody>
-	</table>
+			</tbody>
+		</table>
+	</div>
 </div>
 
 <style>
 	.matrix-wrapper {
 		overflow-x: auto;
+	}
+
+	/* Provides the 2px outer border without doubling the outer cell edges */
+	.matrix-outer {
+		border: 2px solid #555;
+		width: fit-content;
 	}
 
 	.matrix-table {
@@ -73,6 +108,7 @@
 		color: #666;
 		font-family: sans-serif;
 		font-weight: 600;
+		border: none;
 	}
 
 	.row-label {
@@ -83,13 +119,44 @@
 		font-family: sans-serif;
 		font-weight: 600;
 		white-space: nowrap;
+		border: none;
 	}
 
 	.cell {
 		text-align: center;
-		padding: 0.3rem 0.5rem;
-		border: 1px solid #e0e0e0;
-		min-width: 2rem;
+		vertical-align: middle;
+		border: 1px solid #ddd;
+		width: 2.5rem;
+		height: 2.5rem;
+		padding: 0;
+	}
+
+	/*
+	 * Remove the outer edges of the outermost cells so the .matrix-outer border
+	 * serves cleanly as the 2px outer border (no double-border effect).
+	 */
+	.matrix-table tbody tr:first-child td {
+		border-top: none;
+	}
+	.matrix-table tbody tr:last-child td {
+		border-bottom: none;
+	}
+	.matrix-table tbody tr td:first-child {
+		border-left: none;
+	}
+	.matrix-table tbody tr td:last-child {
+		border-right: none;
+	}
+
+	/*
+	 * Intra-hexachordal split: CSS `double` at 3px = two 1px lines + 1px gap.
+	 * Higher specificity than the outer-edge removals above so these always show.
+	 */
+	.matrix-table .cell.split-right {
+		border-right: 3px double #999;
+	}
+	.matrix-table .cell.split-bottom {
+		border-bottom: 3px double #999;
 	}
 
 	@media print {

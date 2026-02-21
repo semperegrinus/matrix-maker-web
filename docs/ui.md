@@ -34,7 +34,7 @@ interface MatrixData {
   transform: MatrixTransform    // Invert, multiplier, rotation, transpose
   stravinskyVerticals: boolean
   displayType: 'numbers' | 'noteNames'
-  accidentals: 'sharps' | 'flats'
+  accidentals: 'sharps' | 'flats'  // flats use Unicode ♭ (D♭, E♭, G♭, A♭, B♭)
 }
 
 type AppState = { sets: SetData[] }
@@ -111,16 +111,21 @@ When creating a matrix, auto-navigates to the matrix view.
 
 #### Matrix tab
 
-Displays the computed matrix grid with:
-- Toolbar for display options:
-  - Radio buttons: Numbers / Note Names
-  - (If Note Names selected) Radio buttons: Sharps / Flats
-  - Checkbox: Stravinsky Verticals (affects row/column computation)
-  - Print button
-- `MatrixGrid` component rendering the matrix table
-- All display changes are immediately saved to `appState`
+**Page header** (above the tabs) shows:
+- Left: matrix name (h1) and full transform description
+- Right: info panel with three rows — Original series, Altered series (after transform),
+  and Transform (concise label, e.g. `I · M5 · R3`). Series values respect the current
+  `displayType` / `accidentals` settings.
 
-Print CSS hides the toolbar and navigation; only the grid is printed.
+**Toolbar** (display options, hidden on print):
+- Radio buttons: Numbers / Note Names
+- (If Note Names selected) Radio buttons: Sharps / Flats
+- Checkbox: Stravinsky Verticals (affects row/column computation)
+- Print button
+
+**`MatrixGrid`** renders the matrix table.  All display changes persist immediately to `appState`.
+
+Print CSS hides the toolbar and navigation; only the grid prints.
 
 #### Analysis tab
 
@@ -191,12 +196,19 @@ Renders a matrix as an HTML `<table>`.
 - `displayType: 'numbers' | 'noteNames'`
 - `accidentals: 'sharps' | 'flats'`
 - `pitchClassOfC: number`
+- `showSetForms?: boolean` — feature flag (default `false`); when `true` renders S/I-form
+  labels on the row/column edges
+- `intraHexachordal?: boolean` — when `true` draws double-line dividers at the midpoint of
+  rows and columns, splitting the grid into quadrants
 
-**Structure:**
-- Thead with column labels: S-form labels (S0, S1, ...) for rows; I-form labels (I0, I4, ...) for columns
-- Tbody with row labels on left; each cell displays pitch using `pitchName()` if `displayType === 'noteNames'`
+**Visual design:**
+- Square cells (2.5 rem × 2.5 rem), 1 px inner borders, 2 px outer border (via wrapper div)
+- Intra-hexachordal split: CSS `3px double` border = two 1 px lines + 1 px gap
+- Standard (non-Stravinsky) path: 12×12 grid → 4 × 6×6 quadrants
+- Stravinsky path: 6×12 grid → 2 × 6×6 side by side (column split only, no row split)
 
-All cells have minimal borders and monospace font for clarity.
+**Important**: `matrix.rowCount` is `6` for intra-hexachordal even in the standard path where
+`matrix.entries` has 12 rows. Always use `matrix.entries.length` for the actual row count.
 
 ### AnalysisPanel.svelte
 
