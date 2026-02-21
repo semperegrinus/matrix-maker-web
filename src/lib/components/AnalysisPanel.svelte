@@ -6,6 +6,7 @@
 	import type { Series } from '$lib/music/series.js';
 	import type { CombinatorialAnalysis } from '$lib/music/analysis.js';
 	import { ENABLE_DYADIC_ANALYSIS } from '$lib/featureFlags.js';
+	import SetFormBadge from './SetFormBadge.svelte';
 
 	interface Props {
 		series: Series;
@@ -42,8 +43,9 @@
 		{/if}
 
 		{#if analysis.degenerateForm}
-			<div class="badge degenerate">
-				Degenerate: {setFormLabel(analysis.degenerateForm)}
+			<div class="degenerate-badge-wrapper">
+				<span class="degenerate-label">Degenerate:</span>
+			<SetFormBadge form={analysis.degenerateForm} {series} />
 			</div>
 		{/if}
 	</section>
@@ -75,7 +77,7 @@
 					<span class="sub-label">Combinatorial forms</span>
 					<div class="badge-row">
 						{#each hex.combinatorialForms as form}
-							<span class="badge form">{setFormLabel(form)}</span>
+							<SetFormBadge {form} {series} />
 						{/each}
 					</div>
 				</div>
@@ -123,7 +125,7 @@
 										{#if gi > 0}<span class="sep">·</span>{/if}
 										<div class="badge-row inline">
 											{#each group as form}
-												<span class="badge form">{setFormLabel(form)}</span>
+												<SetFormBadge {form} {series} />
 											{/each}
 										</div>
 									{/each}
@@ -157,7 +159,7 @@
 								{#if gi > 0}<span class="sep">·</span>{/if}
 								<div class="badge-row inline">
 									{#each group as form}
-										<span class="badge form">{setFormLabel(form)}</span>
+										<SetFormBadge {form} {series} />
 									{/each}
 								</div>
 							{/each}
@@ -243,23 +245,26 @@
 		border: 1px solid #a5d6a7;
 	}
 
-	.badge.degenerate {
+	.degenerate-badge-wrapper {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.3rem;
+		padding: 0.2rem 0.5rem;
 		background: #fff3e0;
-		color: #e65100;
 		border: 1px solid #ffcc80;
+		border-radius: 3px;
+		font-size: 0.8rem;
+		font-weight: 600;
+	}
+
+	.degenerate-label {
+		color: #e65100;
 	}
 
 	.badge.prop {
 		background: #e3f2fd;
 		color: #1565c0;
 		border: 1px solid #90caf9;
-	}
-
-	.badge.form {
-		background: #f3e5f5;
-		color: #6a1b9a;
-		border: 1px solid #ce93d8;
-		font-family: monospace;
 	}
 
 	.badge-row {
