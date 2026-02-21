@@ -13,6 +13,7 @@ import { ALL_SET_FORMS, applySetForm } from './setForm.js';
 import type { SetForm } from './setForm.js';
 import { hexachordLookup } from './hexachordDb.js';
 import type { HexachordInfo } from './hexachordDb.js';
+import { ENABLE_DYADIC_ANALYSIS } from '../featureFlags.js';
 
 export type CombinatorialityGroup = SetForm[];
 export type CombinatorialityClass = CombinatorialityGroup[];
@@ -75,17 +76,17 @@ function buildChordFormGroups(series: Series, chordSize: number): ChordFormGroup
 }
 
 /**
- * Zip two chord arrays pairwise. If every pair is disjoint and their union
- * covers all 12 pitches (aggregate), return the array of unions. Otherwise null.
+ * Zip two chord arrays pairwise. Returns the array of pairwise unions if every
+ * pair is disjoint, otherwise null. Aggregate checking is deferred to the
+ * final filter step so that multi-step accumulation (tetrachordal, trichordal)
+ * can build up toward the aggregate incrementally.
  */
 function combineChordArrays(a: Chord[], b: Chord[]): Chord[] | null {
 	if (a.length !== b.length) return null;
 	const result: Chord[] = [];
 	for (let i = 0; i < a.length; i++) {
 		if (!chordDisjoint(a[i], b[i])) return null;
-		const union = chordUnion(a[i], b[i]);
-		if (!chordIsAggregate(union)) return null;
-		result.push(union);
+		result.push(chordUnion(a[i], b[i]));
 	}
 	return result;
 }
@@ -116,7 +117,10 @@ function combinatorialityClasses(series: Series, chordSize: number): Combinatori
 	}
 
 	return combinatorialities
-		.filter((entry) => entry.groups.length === chordCount - 1)
+		.filter(
+			(entry) =>
+				entry.groups.length === chordCount - 1 && entry.total.every(chordIsAggregate)
+		)
 		.map((entry) => entry.groups);
 }
 
@@ -177,7 +181,7 @@ export function analyzeSeries(series: Series): SeriesAnalysis {
 	const hexachordal = makeHexachordalAnalysis(series);
 	const tetrachordal = makeCombinatorialAnalysis(series, 4);
 	const trichordal = makeCombinatorialAnalysis(series, 3);
-	const dyadic = makeCombinatorialAnalysis(series, 2);
+	const dyadic = ENABLE_DYADIC_ANALYSIS ? makeCombinatorialAnalysis(series, 2) : null;
 
 	return {
 		series,

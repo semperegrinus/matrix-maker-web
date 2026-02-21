@@ -3,6 +3,7 @@ import { analyzeSeries } from './analysis.js';
 import { seriesChordsOfSize, seriesRotate } from './series.js';
 import { chordDisjoint, chordUnion, chordIsAggregate } from './chord.js';
 import type { Chord } from './chord.js';
+import { ENABLE_DYADIC_ANALYSIS } from '../featureFlags.js';
 
 const CHROMATIC = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 // Babbitt: String Quartet No. 2
@@ -79,6 +80,28 @@ describe('combinatorialityClasses via analyzeSeries (Swift testCombinatoriality)
 // General analyzeSeries coverage
 // ---------------------------------------------------------------------------
 
+describe('tetrachordal/trichordal combinatoriality via analyzeSeries', () => {
+	// Chromatic scale has tetrachordal combinatoriality: rotations by 0, 4, 8 combine to aggregates
+	it('chromatic scale has non-empty tetrachordal combinatoriality classes', () => {
+		const result = analyzeSeries(CHROMATIC);
+		expect(result.tetrachordal?.combinatorialityClasses.length).toBeGreaterThan(0);
+	});
+
+	it('chromatic scale tetrachordal classes include S4 and S8 forms', () => {
+		const result = analyzeSeries(CHROMATIC);
+		const classes = result.tetrachordal?.combinatorialityClasses ?? [];
+		const allForms = classes.flatMap((cls) => cls.flatMap((group) => group));
+		const kinds = allForms.map((f) => `${f.kind}${f.base}`);
+		expect(kinds).toContain('S4');
+		expect(kinds).toContain('S8');
+	});
+
+	it('chromatic scale has non-empty trichordal combinatoriality classes', () => {
+		const result = analyzeSeries(CHROMATIC);
+		expect(result.trichordal?.combinatorialityClasses.length).toBeGreaterThan(0);
+	});
+});
+
 describe('analyzeSeries', () => {
 	it('returns the input series', () => {
 		const result = analyzeSeries(BABBITT_SQ2);
@@ -113,8 +136,12 @@ describe('analyzeSeries', () => {
 		expect(analyzeSeries(BABBITT_SQ2).trichordal?.chordSize).toBe(3);
 	});
 
-	it('dyadic chordSize is 2', () => {
-		expect(analyzeSeries(BABBITT_SQ2).dyadic?.chordSize).toBe(2);
+	it('dyadic is null when ENABLE_DYADIC_ANALYSIS is false', () => {
+		if (ENABLE_DYADIC_ANALYSIS) {
+			expect(analyzeSeries(BABBITT_SQ2).dyadic?.chordSize).toBe(2);
+		} else {
+			expect(analyzeSeries(BABBITT_SQ2).dyadic).toBeNull();
+		}
 	});
 
 	it('degenerateForm is null for non-degenerate rows', () => {

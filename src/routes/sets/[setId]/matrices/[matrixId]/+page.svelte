@@ -211,7 +211,7 @@
 		{/if}
 	{:else if activeTab === 'analysis'}
 		{#if parsedSeries}
-			<AnalysisPanel series={parsedSeries} pitchClassOfC={set.pitchClassOfC} />
+			<AnalysisPanel series={parsedSeries} />
 		{:else}
 			<p class="error">Series is invalid or empty.</p>
 		{/if}

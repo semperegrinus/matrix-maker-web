@@ -2,28 +2,21 @@
 	import { analyzeSeries } from '$lib/music/analysis.js';
 	import { computeIntervalVector } from '$lib/music/intervalVector.js';
 	import { chordPitches } from '$lib/music/chord.js';
-	import { pitchName } from '$lib/music/pitch.js';
 	import { setFormLabel } from '$lib/music/setForm.js';
 	import type { Series } from '$lib/music/series.js';
 	import type { CombinatorialAnalysis } from '$lib/music/analysis.js';
+	import { ENABLE_DYADIC_ANALYSIS } from '$lib/featureFlags.js';
 
 	interface Props {
 		series: Series;
-		pitchClassOfC: number;
 	}
 
-	let { series, pitchClassOfC }: Props = $props();
+	let { series }: Props = $props();
 
 	const analysis = $derived(analyzeSeries(series));
 
 	function ivString(iv: number[]): string {
 		return '<' + iv.join('') + '>';
-	}
-
-	function chordName(chord: number, pcc: number): string {
-		return chordPitches(chord)
-			.map((p) => pitchName(p, { pitchClassOfC: pcc }))
-			.join(', ');
 	}
 </script>
 
@@ -100,16 +93,65 @@
 		</section>
 	{/if}
 
-	<!-- Combinatorial analyses -->
-	{#each (['tetrachordal', 'trichordal', 'dyadic'] as const) as key}
+	<!-- Tetrachordal and Trichordal analyses - always shown -->
+	{#each (['tetrachordal', 'trichordal'] as const) as key}
 		{@const ca = analysis[key] as CombinatorialAnalysis | null}
-		{#if ca && ca.combinatorialityClasses.length > 0}
+		{#if ca}
 			<section>
 				<h3>{key.charAt(0).toUpperCase() + key.slice(1)}</h3>
 
 				<div class="subsection">
-					<span class="sub-label">Combinatoriality classes</span>
-					{#each ca.combinatorialityClasses as cls}
+					<span class="sub-label">Segments</span>
+					<div>
+						{#each ca.chords as chord, i}
+							<div class="iv-entry">
+								<span class="iv-label-sm">{i + 1}</span>
+								<span class="chord-pitches">{series.slice(i * ca.chordSize, (i + 1) * ca.chordSize).join(' ')}</span>
+								<span class="iv-vector">{ivString(computeIntervalVector(chordPitches(chord)))}</span>
+							</div>
+						{/each}
+					</div>
+				</div>
+
+				{#if ca.combinatorialityClasses.length > 0}
+					<div class="subsection">
+						<span class="sub-label">Combinatoriality</span>
+						<div class="subsection-content">
+							{#each ca.combinatorialityClasses as cls}
+								<div class="comb-class">
+									{#each cls as group, gi}
+										{#if gi > 0}<span class="sep">·</span>{/if}
+										<div class="badge-row inline">
+											{#each group as form}
+												<span class="badge form">{setFormLabel(form)}</span>
+											{/each}
+										</div>
+									{/each}
+								</div>
+							{/each}
+						</div>
+					</div>
+
+					{#if ca.generator}
+						<div class="subsection">
+							<span class="sub-label">Generator</span>
+							<span class="value mono">{ca.generator.series.join(' ')}</span>
+						</div>
+					{/if}
+				{/if}
+			</section>
+		{/if}
+	{/each}
+
+	<!-- Dyadic - only when feature flag is enabled and combinatoriality exists -->
+	{#if ENABLE_DYADIC_ANALYSIS && analysis.dyadic && analysis.dyadic.combinatorialityClasses.length > 0}
+		<section>
+			<h3>Dyadic</h3>
+
+			<div class="subsection">
+				<span class="sub-label">Combinatoriality classes</span>
+				<div class="subsection-content">
+					{#each analysis.dyadic.combinatorialityClasses as cls}
 						<div class="comb-class">
 							{#each cls as group, gi}
 								{#if gi > 0}<span class="sep">·</span>{/if}
@@ -122,16 +164,17 @@
 						</div>
 					{/each}
 				</div>
+			</div>
 
-				{#if ca.generator}
-					<div class="subsection">
-						<span class="sub-label">Generator</span>
-						<span class="value mono">{ca.generator.series.join(' ')}</span>
-					</div>
-				{/if}
-			</section>
-		{/if}
-	{/each}
+			{#if analysis.dyadic.generator}
+				<div class="subsection">
+					<span class="sub-label">Generator</span>
+					<span class="value mono">{analysis.dyadic.generator.series.join(' ')}</span>
+				</div>
+			{/if}
+		</section>
+	{/if}
+
 </div>
 
 <style>
@@ -169,7 +212,13 @@
 		font-size: 0.8rem;
 		color: #666;
 		min-width: 120px;
+		flex-shrink: 0;
 		padding-top: 0.15rem;
+	}
+
+	.subsection-content {
+		flex: 1;
+		min-width: 0;
 	}
 
 	.value {
@@ -272,6 +321,13 @@
 		font-family: monospace;
 		font-size: 0.9rem;
 		color: #333;
+	}
+
+	.chord-pitches {
+		font-size: 0.85rem;
+		color: #555;
+		font-family: monospace;
+		flex: 1;
 	}
 
 	.comb-class {
