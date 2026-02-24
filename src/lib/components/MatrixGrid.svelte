@@ -5,7 +5,7 @@
 
 	interface Props {
 		matrix: Matrix;
-		displayType: 'numbers' | 'noteNames';
+		displayType: 'numbers' | 'noteNames' | 'both';
 		accidentals: 'sharps' | 'flats';
 		pitchClassOfC: number;
 		showSetForms?: boolean;
@@ -26,6 +26,10 @@
 			return pitchName(p, { pitchClassOfC, accidentals });
 		}
 		return String(p);
+	}
+
+	function displayName(p: number): string {
+		return pitchName(p, { pitchClassOfC, accidentals });
 	}
 
 	// Row labels: S{entries[i][0]}, column labels: I{entries[0][j]}
@@ -71,7 +75,16 @@
 								class="cell"
 								class:split-right={j === splitCol}
 								class:split-bottom={i === splitRow}
-							>{display(pitch)}</td>
+							>
+								{#if displayType === 'both'}
+									<div class="both-cell">
+										<span class="both-num">{display(pitch)}</span>
+										<span class="both-name">{displayName(pitch)}</span>
+									</div>
+								{:else}
+									{display(pitch)}
+								{/if}
+							</td>
 						{/each}
 					</tr>
 				{/each}
@@ -83,6 +96,8 @@
 <style>
 	.matrix-wrapper {
 		overflow-x: auto;
+		display: flex;
+		justify-content: center;
 	}
 
 	/* Provides the 2px outer border without doubling the outer cell edges */
@@ -125,10 +140,25 @@
 	.cell {
 		text-align: center;
 		vertical-align: middle;
-		border: 1px solid #ddd;
+		border: 1px solid #bbb;
 		width: 2.5rem;
 		height: 2.5rem;
 		padding: 0;
+	}
+
+	.both-cell {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: space-evenly;
+		width: 2.5rem;
+		height: 2.5rem;
+	}
+
+	.both-num,
+	.both-name {
+		font-size: 0.8rem;
+		line-height: 1;
 	}
 
 	/*

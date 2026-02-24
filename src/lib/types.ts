@@ -5,7 +5,7 @@ export interface MatrixData {
 	name: string;
 	transform: MatrixTransform;
 	stravinskyVerticals: boolean;
-	displayType: 'numbers' | 'noteNames';
+	displayType: 'numbers' | 'noteNames' | 'both';
 	accidentals: 'sharps' | 'flats';
 	lastViewedAt?: number; // ms since epoch
 }

@@ -38,7 +38,7 @@
 	);
 
 	function displaySeries(s: number[]): string {
-		if (matrixData?.displayType === 'noteNames') {
+		if (matrixData?.displayType === 'noteNames' || matrixData?.displayType === 'both') {
 			return s
 				.map((p) =>
 					pitchName(p, {
@@ -61,7 +61,7 @@
 	});
 
 	// Bound display options — update matrixData in place
-	function setDisplayType(v: 'numbers' | 'noteNames') {
+	function setDisplayType(v: 'numbers' | 'noteNames' | 'both') {
 		if (!set || !matrixData) return;
 		updateMatrix(set.id, matrixData.id, { displayType: v });
 	}
@@ -128,68 +128,85 @@
 	{#if activeTab === 'matrix'}
 		<!-- Toolbar -->
 		<div class="toolbar no-print">
-			<div class="toolbar-group">
-				<span class="toolbar-label">Display</span>
-				<label class:selected={matrixData.displayType === 'numbers'}>
-					<input
-						type="radio"
-						name="display"
-						value="numbers"
-						checked={matrixData.displayType === 'numbers'}
-						onchange={() => setDisplayType('numbers')}
-					/>
-					Numbers
-				</label>
-				<label class:selected={matrixData.displayType === 'noteNames'}>
-					<input
-						type="radio"
-						name="display"
-						value="noteNames"
-						checked={matrixData.displayType === 'noteNames'}
-						onchange={() => setDisplayType('noteNames')}
-					/>
-					Note names
-				</label>
+			<div class="toolbar-row">
+				<div class="toolbar-group">
+					<span class="toolbar-label">Pitch display</span>
+					<label class:selected={matrixData.displayType === 'numbers'}>
+						<input
+							type="radio"
+							name="display"
+							value="numbers"
+							checked={matrixData.displayType === 'numbers'}
+							onchange={() => setDisplayType('numbers')}
+						/>
+						Numbers
+					</label>
+					<label class:selected={matrixData.displayType === 'noteNames'}>
+						<input
+							type="radio"
+							name="display"
+							value="noteNames"
+							checked={matrixData.displayType === 'noteNames'}
+							onchange={() => setDisplayType('noteNames')}
+						/>
+						Note names
+					</label>
+					<label class:selected={matrixData.displayType === 'both'}>
+						<input
+							type="radio"
+							name="display"
+							value="both"
+							checked={matrixData.displayType === 'both'}
+							onchange={() => setDisplayType('both')}
+						/>
+						Both
+					</label>
+				</div>
 			</div>
 
-			{#if matrixData.displayType === 'noteNames'}
-				<div class="toolbar-group">
-					<span class="toolbar-label">Accidentals</span>
-					<label class:selected={matrixData.accidentals === 'sharps'}>
-						<input
-							type="radio"
-							name="accidentals"
-							value="sharps"
-							checked={matrixData.accidentals === 'sharps'}
-							onchange={() => setAccidentals('sharps')}
-						/>
-						Sharps
-					</label>
-					<label class:selected={matrixData.accidentals === 'flats'}>
-						<input
-							type="radio"
-							name="accidentals"
-							value="flats"
-							checked={matrixData.accidentals === 'flats'}
-							onchange={() => setAccidentals('flats')}
-						/>
-						Flats
-					</label>
+			{#if matrixData.displayType === 'noteNames' || matrixData.displayType === 'both'}
+				<div class="toolbar-row">
+					<div class="toolbar-group">
+						<span class="toolbar-label">Accidentals</span>
+						<label class:selected={matrixData.accidentals === 'sharps'}>
+							<input
+								type="radio"
+								name="accidentals"
+								value="sharps"
+								checked={matrixData.accidentals === 'sharps'}
+								onchange={() => setAccidentals('sharps')}
+							/>
+							Sharps
+						</label>
+						<label class:selected={matrixData.accidentals === 'flats'}>
+							<input
+								type="radio"
+								name="accidentals"
+								value="flats"
+								checked={matrixData.accidentals === 'flats'}
+								onchange={() => setAccidentals('flats')}
+							/>
+							Flats
+						</label>
+					</div>
 				</div>
 			{/if}
 
-			<div class="toolbar-group">
-				<label class="checkbox-label">
-					<input
-						type="checkbox"
-						checked={matrixData.stravinskyVerticals}
-						onchange={(e) => setStravinsky((e.target as HTMLInputElement).checked)}
-					/>
-					Stravinsky verticals
-				</label>
-			</div>
+			<div class="toolbar-row">
+				<div class="toolbar-group">
+					<span class="toolbar-label">Matrix display</span>
+					<label class="checkbox-label">
+						<input
+							type="checkbox"
+							checked={matrixData.stravinskyVerticals}
+							onchange={(e) => setStravinsky((e.target as HTMLInputElement).checked)}
+						/>
+						Stravinsky verticals
+					</label>
+				</div>
 
-			<button class="btn-print no-print" onclick={() => window.print()}>Print</button>
+				<button class="btn-print no-print" onclick={() => window.print()}>Print</button>
+			</div>
 		</div>
 
 		{#if matrix}
@@ -311,13 +328,19 @@
 
 	.toolbar {
 		display: flex;
-		align-items: center;
-		gap: 1.25rem;
+		flex-direction: column;
+		gap: 0.4rem;
 		padding: 0.6rem 0.75rem;
 		background: #f8f8f8;
 		border: 1px solid #e8e8e8;
 		border-radius: 6px;
 		margin-bottom: 1rem;
+	}
+
+	.toolbar-row {
+		display: flex;
+		align-items: center;
+		gap: 1.25rem;
 		flex-wrap: wrap;
 	}
 

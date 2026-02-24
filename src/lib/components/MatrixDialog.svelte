@@ -43,7 +43,7 @@
 	// svelte-ignore state_referenced_locally
 	let stravinskyVerticals = $state(matrix?.stravinskyVerticals ?? false);
 	// svelte-ignore state_referenced_locally
-	let displayType = $state<'numbers' | 'noteNames'>(matrix?.displayType ?? 'numbers');
+	let displayType = $state<'numbers' | 'noteNames' | 'both'>(matrix?.displayType ?? 'numbers');
 	// svelte-ignore state_referenced_locally
 	let accidentals = $state<'sharps' | 'flats'>(matrix?.accidentals ?? 'sharps');
 
@@ -116,6 +116,10 @@
 	function displayPitch(p: number): string {
 		if (displayType === 'noteNames') {
 			return pitchName(p, { pitchClassOfC, accidentals });
+		}
+		if (displayType === 'both') {
+			const name = pitchName(p, { pitchClassOfC, accidentals });
+			return `${p}/${name}`;
 		}
 		return String(p);
 	}
@@ -207,23 +211,33 @@
 		<fieldset>
 			<legend>Display</legend>
 
-			<div class="field-row">
-				<label>
-					<input type="checkbox" bind:checked={stravinskyVerticals} />
-					Stravinsky verticals
-				</label>
+			<div class="option-group">
+				<span class="option-label">Pitch display</span>
+				<div class="option-row">
+					<label><input type="radio" bind:group={displayType} value="numbers" /> Numbers</label>
+					<label><input type="radio" bind:group={displayType} value="noteNames" /> Note names</label>
+					<label><input type="radio" bind:group={displayType} value="both" /> Both</label>
+				</div>
 			</div>
 
-			<div class="field-row">
-				<span class="field-label">Show as</span>
-				<label><input type="radio" bind:group={displayType} value="numbers" /> Numbers</label>
-				<label><input type="radio" bind:group={displayType} value="noteNames" /> Note names</label>
-			</div>
+			{#if displayType !== 'numbers'}
+				<div class="option-group">
+					<span class="option-label">Accidentals</span>
+					<div class="option-row">
+						<label><input type="radio" bind:group={accidentals} value="sharps" /> Sharps</label>
+						<label><input type="radio" bind:group={accidentals} value="flats" /> Flats</label>
+					</div>
+				</div>
+			{/if}
 
-			<div class="field-row">
-				<span class="field-label">Accidentals</span>
-				<label><input type="radio" bind:group={accidentals} value="sharps" /> Sharps</label>
-				<label><input type="radio" bind:group={accidentals} value="flats" /> Flats</label>
+			<div class="option-group">
+				<span class="option-label">Matrix display</span>
+				<div class="option-row">
+					<label>
+						<input type="checkbox" bind:checked={stravinskyVerticals} />
+						Stravinsky verticals
+					</label>
+				</div>
 			</div>
 		</fieldset>
 
@@ -300,10 +314,24 @@
 		flex-wrap: wrap;
 	}
 
-	.field-label {
-		font-size: 0.85rem;
-		color: #555;
-		min-width: 60px;
+	.option-group {
+		display: flex;
+		flex-direction: column;
+		gap: 0.3rem;
+		margin-bottom: 0.6rem;
+	}
+
+	.option-label {
+		font-size: 0.75rem;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		color: #888;
+	}
+
+	.option-row {
+		display: flex;
+		gap: 0.75rem;
+		flex-wrap: wrap;
 	}
 
 	label {
