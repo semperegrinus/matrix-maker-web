@@ -96,9 +96,34 @@ describe('tetrachordal/trichordal combinatoriality via analyzeSeries', () => {
 		expect(kinds).toContain('S8');
 	});
 
+	it('chromatic scale tetrachordal classes each have 3 groups (base + 2 complementary)', () => {
+		const result = analyzeSeries(CHROMATIC);
+		const classes = result.tetrachordal?.combinatorialityClasses ?? [];
+		expect(classes.length).toBeGreaterThan(0);
+		for (const cls of classes) {
+			expect(cls).toHaveLength(3); // chordCount = 12/4 = 3
+		}
+	});
+
+	it('chromatic scale tetrachordal first group includes S0 (base form)', () => {
+		const result = analyzeSeries(CHROMATIC);
+		const firstClass = result.tetrachordal?.combinatorialityClasses[0] ?? [];
+		const baseGroupLabels = (firstClass[0] ?? []).map((f) => `${f.kind}${f.base}`);
+		expect(baseGroupLabels).toContain('S0');
+	});
+
 	it('chromatic scale has non-empty trichordal combinatoriality classes', () => {
 		const result = analyzeSeries(CHROMATIC);
 		expect(result.trichordal?.combinatorialityClasses.length).toBeGreaterThan(0);
+	});
+
+	it('chromatic scale trichordal classes each have 4 groups (base + 3 complementary)', () => {
+		const result = analyzeSeries(CHROMATIC);
+		const classes = result.trichordal?.combinatorialityClasses ?? [];
+		expect(classes.length).toBeGreaterThan(0);
+		for (const cls of classes) {
+			expect(cls).toHaveLength(4); // chordCount = 12/3 = 4
+		}
 	});
 });
 

@@ -19,6 +19,8 @@
 	function ivString(iv: number[]): string {
 		return '<' + iv.join('') + '>';
 	}
+
+	const CLASS_COLORS = ['#e3f2fd', '#e8f5e9', '#fff8e1', '#fce4ec', '#f3e5f5'];
 </script>
 
 <div class="analysis">
@@ -118,9 +120,12 @@
 				{#if ca.combinatorialityClasses.length > 0}
 					<div class="subsection">
 						<span class="sub-label">Combinatoriality</span>
-						<div class="subsection-content">
-							{#each ca.combinatorialityClasses as cls}
-								<div class="comb-class">
+						<div class="comb-classes">
+							{#each ca.combinatorialityClasses as cls, ci}
+								<div
+									class="comb-class"
+									style:background={CLASS_COLORS[ci % CLASS_COLORS.length]}
+								>
 									{#each cls as group, gi}
 										{#if gi > 0}<span class="sep">·</span>{/if}
 										<div class="badge-row inline">
@@ -152,9 +157,12 @@
 
 			<div class="subsection">
 				<span class="sub-label">Combinatoriality classes</span>
-				<div class="subsection-content">
-					{#each analysis.dyadic.combinatorialityClasses as cls}
-						<div class="comb-class">
+				<div class="comb-classes">
+					{#each analysis.dyadic.combinatorialityClasses as cls, ci}
+						<div
+							class="comb-class"
+							style:background={CLASS_COLORS[ci % CLASS_COLORS.length]}
+						>
 							{#each cls as group, gi}
 								{#if gi > 0}<span class="sep">·</span>{/if}
 								<div class="badge-row inline">
@@ -216,11 +224,6 @@
 		min-width: 120px;
 		flex-shrink: 0;
 		padding-top: 0.15rem;
-	}
-
-	.subsection-content {
-		flex: 1;
-		min-width: 0;
 	}
 
 	.value {
@@ -335,11 +338,19 @@
 		flex: 1;
 	}
 
+	.comb-classes {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 0.4rem;
+	}
+
 	.comb-class {
 		display: flex;
 		align-items: center;
-		gap: 0.25rem;
-		margin-bottom: 0.35rem;
+		gap: 0.35rem;
+		padding: 0.3rem 0.6rem;
+		border-radius: 5px;
 		flex-wrap: wrap;
 	}
 

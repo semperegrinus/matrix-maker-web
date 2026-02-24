@@ -168,7 +168,18 @@ function makeCombinatorialAnalysis(
 	if (series.length !== 12 && series.length !== 12 - chordSize) return null;
 	const completion = seriesCompletion(series);
 	const chords = seriesChordsOfSize(completion, chordSize);
-	const classes = combinatorialityClasses(completion, chordSize);
+	const rawClasses = combinatorialityClasses(completion, chordSize);
+
+	// Identify the "base group": all set forms whose chord partition matches
+	// the base series. Prepend it to every class so each class shows the
+	// complete combinatorial grouping (base forms + complementary groups).
+	const baseKey = JSON.stringify(chords);
+	const baseGroup: CombinatorialityGroup = ALL_SET_FORMS.filter(
+		(form) =>
+			JSON.stringify(seriesChordsOfSize(applySetForm(form, completion), chordSize)) === baseKey
+	);
+	const classes: CombinatorialityClass[] = rawClasses.map((cls) => [baseGroup, ...cls]);
+
 	const generator = computeGenerator(series, chordSize);
 	return { chordSize, chords, combinatorialityClasses: classes, generator };
 }

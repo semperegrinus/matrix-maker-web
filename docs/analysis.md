@@ -41,6 +41,14 @@ Calls `seriesCompletion` first (handles 6-note input).
 ## CombinatorialAnalysis
 
 Handles series of length 12 or `12 - chordSize`.
+
+`combinatorialityClasses` — each class is a `CombinatorialityGroup[]` with
+exactly `12/chordSize` groups. The **first group is always the base group**:
+all set forms that produce the same chord partition as the base series (P0
+and any equivalent forms). The remaining `12/chordSize - 1` groups are the
+complementary partitions found by the BFS in `combinatorialityClasses()`.
+This gives the user a complete picture of each combinatorial grouping.
+
 `generator` field: splits series into segments; finds set forms transforming
 first segment into each subsequent one (`setFormsYielding`).
 
